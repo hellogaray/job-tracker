@@ -1,7 +1,20 @@
+import os
+import psycopg
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
 from datetime import date
 from decimal import Decimal
+
+load_dotenv()
+
+def get_db_connection():
+    return psycopg.connect(
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        host=os.getenv("DB_HOST"),
+        port=os.getenv("DB_PORT"),
+	)
 
 app = FastAPI()
 @app.get("/")
