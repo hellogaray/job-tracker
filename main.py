@@ -17,6 +17,7 @@ def get_db_connection():
 	)
 
 app = FastAPI()
+
 @app.get("/")
 
 def root():
@@ -26,7 +27,6 @@ def root():
 }
 
 class Job(BaseModel):
-    id: int
     company: str
     job_title: str
     status: str = "Saved"
@@ -42,16 +42,3 @@ class Job(BaseModel):
 def jobs(job: Job):
     return job
 
-CREATE TABLE jobs (
-    id INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    company text NOT NULL,
-    job_title text NOT NULL,
-    status text NOT NULL,
-    location text NOT NULL,
-    salary_min DEC CHECK (salary_min >= 0),
-    salary_max DEC CHECK (salary_max >= 0),
-    url text,
-    date_applied DATE,
-    notes text,
-    interview_date DATE
-);
