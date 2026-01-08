@@ -40,6 +40,18 @@ class Job(BaseModel):
     notes: str = ""
     interview_date: date | None = None
 
+class JobUpdate(BaseModel):
+    company: str | None = None
+    job_title: str | None = None
+    status: str | None = None
+    location: str | None = None
+    salary_min: Decimal | None = None
+    salary_max: Decimal | None = None
+    url: str | None = None
+    date_applied: date | None = None
+    notes: str | None = None
+    interview_date: date | None = None
+
 @app.post("/jobs")
 
 def jobs(job: Job):
@@ -68,3 +80,8 @@ def get_jobs():
             cur.execute("SELECT * FROM jobs ORDER BY id")
             jobs = cur.fetchall()
     return jobs
+
+@app.patch("/jobs/{job_id}")
+def update_job(job_id: int, updates: JobUpdate):
+    changes = updates.model_dump(exclude_unset=True)
+    return {"job_id": job_id, "changes": changes}
